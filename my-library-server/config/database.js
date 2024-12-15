@@ -1,6 +1,8 @@
 import { Sequelize } from "sequelize";
 import winston from "winston";
-
+import "dotenv/config";
+const database = process.env.DATABASE_URL;
+console.log(database);
 const logger = winston.createLogger({
   level: "info",
   format: winston.format.json(),
@@ -18,11 +20,8 @@ if (process.env.NODE_ENV !== "production") {
   );
 }
 
-const sequelize = new Sequelize(
-  "postgres://postgres:postgres@localhost:5432/books_db",
-  {
-    logging: (msg) => logger.info(msg),
-  }
-);
+const sequelize = new Sequelize(database, {
+  logging: (msg) => logger.info(msg),
+});
 
 export { sequelize, logger };
