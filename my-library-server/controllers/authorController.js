@@ -59,3 +59,21 @@ export const updateAuthor = async (req, res) => {
     res.status(500).json({ message: "Failed to update author" });
   }
 };
+export const deleteAuthor = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id || isNaN(id)) {
+      return res.status(400).json({ error: "Invalid Author" });
+    }
+    const author = await Author.findByPk(id);
+
+    if (!author) {
+      return res.status(404).json({ error: "Author not found" });
+    }
+    await Author.destroy({ where: { id } });
+    res.status(200).json({ message: "Author deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting author:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};

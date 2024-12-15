@@ -45,12 +45,22 @@ const Books = () => {
     },
   });
 
-  const handleDelete = (id) => {
-    mutateDeleteBook(id);
+  const handleDelete = async (id) => {
+    try {
+      await mutateDeleteBook(id);
+      toast.success("Book deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete book");
+    }
   };
 
-  const handleUpdate = (id, updatedData) => {
-    mutateUpdateBook({ id, updatedData });
+  const handleUpdate = async (id, updatedData) => {
+    try {
+      await mutateUpdateBook({ id, updatedData });
+      toast.success("Book updated successfully");
+    } catch (error) {
+      toast.error("Failed to update book");
+    }
   };
 
   if (isLoading)

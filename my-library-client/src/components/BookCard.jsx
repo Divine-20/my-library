@@ -102,18 +102,21 @@ const BookCard = ({
       >
         <p>Are you sure you want to delete this book?</p>
         <Content style={{ display: "flex", gap: "1em" }}>
-          <Button onClick={() => handleDelete()}>Yes</Button>
-          <button
-            onClick={() => setDeleteModalOpen(false)}
-            style={{
-              backgroundColor: "white",
-              color: "black",
-              border: "1px solid ",
-              outline: "none",
-            }}
-          >
-            Cancel
-          </button>
+          <Content style={{ width: "100%", display: "flex", gap: "2em" }}>
+            <Button onClick={() => handleDelete()}>Yes</Button>
+            <button
+              onClick={() => setDeleteModalOpen(false)}
+              style={{
+                backgroundColor: "white",
+                color: "black",
+                border: "1px solid ",
+                outline: "none",
+                width: "100%",
+              }}
+            >
+              Cancel
+            </button>
+          </Content>
         </Content>
       </ReusableModal>
 

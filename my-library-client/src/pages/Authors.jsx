@@ -43,13 +43,22 @@ const Authors = () => {
       queryClient.invalidateQueries(["authors"]);
     },
   });
-
-  const handleDelete = (id) => {
-    mutateDeleteAuthor(id);
+  const handleDelete = async (id) => {
+    try {
+      await mutateDeleteAuthor(id);
+      toast.success("Author deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete author");
+    }
   };
 
-  const handleUpdate = (id, updatedData) => {
-    mutateUpdateAuthor({ id, updatedData });
+  const handleUpdate = async (id, updatedData) => {
+    try {
+      await mutateUpdateAuthor({ id, updatedData });
+      toast.success("Author updated successfully");
+    } catch (error) {
+      toast.error("Failed to update author");
+    }
   };
 
   if (isLoading)

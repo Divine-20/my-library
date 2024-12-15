@@ -2,6 +2,7 @@ import express from "express";
 import { authenticateToken } from "../middleware/auth.js";
 import Book from "../models/Book.js";
 import Author from "../models/Author.js";
+import { where } from "sequelize";
 
 const router = express.Router();
 
@@ -66,6 +67,18 @@ router.put("/:id", authenticateToken, async (req, res) => {
     res.json(book);
   } catch (error) {
     res.status(400).json({ message: error.message });
+  }
+});
+
+router.delete("/:id", authenticateToken, async (req, res) => {
+  try {
+    const book = await Book.findByPk(req.params.id);
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+    await book.destroy();
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
   }
 });
 
