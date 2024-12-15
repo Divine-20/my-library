@@ -37,11 +37,12 @@ const AuthorCard = ({ id, name, bio, onDelete, onUpdate }) => {
             <PiNotePencilThin
               onClick={() => setEditModalOpen(true)}
               cursor="pointer"
+              style={{ fontSize: "20px" }}
             />
             <GoTrash
               onClick={() => setDeleteModalOpen(true)}
               cursor="pointer"
-              style={{ color: "red" }}
+              style={{ color: "red", fontSize: "20px" }}
             />
           </Content>
         </Content>

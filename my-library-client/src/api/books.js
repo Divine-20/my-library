@@ -36,3 +36,7 @@ export const updateBook = async (id, bookData) => {
   const { data } = await api.put(`/books/${id}`, bookData);
   return data;
 };
+export const deleteBook = async (id) => {
+  const { data } = await api.delete(`/books/${id}`);
+  return;
+};

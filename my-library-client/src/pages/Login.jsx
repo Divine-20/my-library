@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -14,25 +14,30 @@ import {
 } from "../styles/Form";
 import toast from "react-hot-toast";
 import AppLogo from "../components/logo";
-import styled from "styled-components";
+import ClipLoader from "react-spinners/ClipLoader";
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data) => {
+    setLoading(true);
     try {
       const result = await login(data.email, data.password);
-      dispatch(setCredentials(result));
-      if (result.success === true) {
+      if (result.success) {
+        dispatch(setCredentials(result));
         toast.success("Logged in successfully");
+        navigate("/books");
       } else {
         toast.error(result.message);
       }
-      navigate("/books");
     } catch (error) {
+      toast.error("Login failed. Please try again.");
       console.error("Login failed:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -60,7 +65,9 @@ function Login() {
           placeholder="Password"
           required
         />
-        <Button type="submit">Login</Button>
+        <Button type="submit" disabled={loading}>
+          {loading ? <ClipLoader size={20} color="#ffffff" /> : "Login"}
+        </Button>
         <Content>
           <p>
             Don't have an account?

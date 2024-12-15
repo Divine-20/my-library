@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import BookCard from "../components/BookCard";
-import { fetchBooks, updateBook } from "../api/books";
+import { fetchBooks, updateBook, deleteBook } from "../api/books";
 import "../styles/Modal.css";
 import {
   AddButton,
@@ -17,37 +17,55 @@ import {
 import AddBook from "./AddBook";
 import ReusableModal from "../components/modal/modal";
 import { useNavigate } from "react-router-dom";
+import ClipLoader from "react-spinners/ClipLoader";
+
 const Books = () => {
   const [page, setPage] = useState(1);
   const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
     queryKey: ["books", page],
     queryFn: () => fetchBooks(page),
   });
 
-  const handleDelete = async (id) => {
-    await deleteBook(id);
-    setBooks(data.filter((book) => book.id !== id));
-    navigate("/books");
+  const { mutate: mutateUpdateBook, isLoading: isUpdating } = useMutation({
+    mutationFn: (updatedBook) =>
+      updateBook(updatedBook.id, updatedBook.updatedData),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["books"]);
+    },
+  });
+
+  const { mutate: mutateDeleteBook, isLoading: isDeleting } = useMutation({
+    mutationFn: (id) => deleteBook(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["books"]);
+    },
+  });
+
+  const handleDelete = (id) => {
+    mutateDeleteBook(id);
   };
 
-  const handleUpdate = async (id, updatedData) => {
-    const updatedBook = await updateBook(id, updatedData);
-    setBooks(data.map((book) => (book.id === id ? updatedBook : book)));
-
-    navigate("/books");
+  const handleUpdate = (id, updatedData) => {
+    mutateUpdateBook({ id, updatedData });
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div>
+        <ClipLoader />
+      </div>
+    );
+
   return (
     <Container>
       <Header>
         <Title>Book Collection</Title>
         <Content>
           <AddButton onClick={() => setOpenModal(true)}>Add New Book</AddButton>
-          <AddButton onClick={() => navigate("/authors")}>Authors</AddButton>
         </Content>
       </Header>
       <Grid>

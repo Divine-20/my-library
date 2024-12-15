@@ -19,3 +19,7 @@ export const updateAuthor = async (id, authorData) => {
   const { data } = await api.put(`/authors/${id}`, authorData);
   return data;
 };
+export const deleteAuthor = async (id) => {
+  const { data } = await api.delete(`/authors/${id}`);
+  return;
+};

@@ -14,13 +14,16 @@ import {
 import toast from "react-hot-toast";
 import AppLogo from "../components/logo";
 import { createAccount } from "../api/auth";
+import ClipLoader from "react-spinners/ClipLoader";
 
 function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data) => {
+    setLoading(true);
     try {
       const result = await createAccount(
         data.firstName,
@@ -37,6 +40,8 @@ function Register() {
       navigate("/login");
     } catch (error) {
       console.error("Failed to create account:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -76,7 +81,13 @@ function Register() {
           placeholder="Password"
           required
         />
-        <Button type="submit">Create account</Button>
+        <Button type="submit" disabled={loading}>
+          {loading ? (
+            <ClipLoader size={20} color="#ffffff" />
+          ) : (
+            "Create account"
+          )}
+        </Button>
         <Content>
           <p>
             Already have an account?
