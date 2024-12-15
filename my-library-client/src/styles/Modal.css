@@ -1,0 +1,68 @@
+/* Base modal styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+
+ }
+ 
+ .modal.hide {
+    display: none;
+ }
+ 
+ .modal-content {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-height: 80%;
+    overflow-y: auto;
+    
+    justify-content: center;
+    flex-direction: center;
+    align-items: center;
+ }
+ 
+ .modal-content.modal-xl {
+    max-width: 800px;
+ }
+ 
+ .modal-content.modal-lg {
+    max-width: 600px;
+ }
+ 
+ .modal-content.modal-sm {
+    max-width: 400px;
+ }
+ 
+ /* Header styles */
+ .modal-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+ }
+ 
+ .modal-close {
+    background: none;
+    border: none;
+    font-size: 24px; 
+    float: right;
+    width: 10px;
+    cursor: pointer;
+    color: #333;
+ }
+ 
+ /* Body styles */
+ .modal-body {
+    padding: 16px;
+ }
+ 
